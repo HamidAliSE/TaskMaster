@@ -1,10 +1,8 @@
-import { View, Text } from 'react-native';
+import AppNavigation from 'navigation';
 
 const App = () => {
     return (
-        <View>
-            <Text>Task Master</Text>
-        </View>
+        <AppNavigation />
     );
 }
 
