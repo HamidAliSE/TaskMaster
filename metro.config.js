@@ -1,11 +1,9 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+const metroConfigSVG = require('./metro-config/svg');
 
-/**
- * Metro configuration
- * https://reactnative.dev/docs/metro
- *
- * @type {import('@react-native/metro-config').MetroConfig}
- */
-const config = {};
+module.exports = (async () => {
+    const base = await getDefaultConfig(__dirname);
+    const svgConfig = metroConfigSVG(base);
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+    return mergeConfig(base, svgConfig);
+})();
