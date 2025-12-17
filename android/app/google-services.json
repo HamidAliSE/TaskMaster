@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "439372823152",
+    "project_id": "qarshi-cdcd3",
+    "storage_bucket": "qarshi-cdcd3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439372823152:android:aed3d51db67f407a5b92b5",
+        "android_client_info": {
+          "package_name": "com.taskmaster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxamw1uZdkaIavOP6vrODjyps91qU1tz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
