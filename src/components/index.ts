@@ -4,3 +4,4 @@ export { default as Separator } from './Separator';
 export { default as TextInput } from './TextInput';
 export { default as Button } from './Button';
 export { default as AppLoader } from './AppLoader';
+export { default as IconButton } from './IconButton';

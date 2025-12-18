@@ -4,7 +4,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { useReactNavigation } from 'hooks';
-import { Header, Separator, Button } from 'components';
+import { Header, Separator, Button, IconButton } from 'components';
+import { Edit, Delete } from 'images/svg';
 import Styles from 'constants/Styles';
 import Colors from 'constants/Colors';
 
@@ -36,8 +37,36 @@ const ProductsScreen = () => {
                     ItemSeparatorComponent={<Separator />}
                     renderItem={({ item }) => (
                         <View key={item.name} style={styles.productEntry}>
-                            <Text style={styles.productName}>{item.name}</Text>
-                            <Text>{item.price} Rs.</Text>
+                            <View style={styles.productInfoContainer}>
+                                <View style={styles.nameContainer}>
+                                    <Text style={styles.productName} numberOfLines={1} ellipsizeMode="tail">
+                                        {item.name}
+                                    </Text>
+                                </View>
+                                <View style={styles.priceContainer}>
+                                    <Text style={styles.productPrice} numberOfLines={1} ellipsizeMode="tail">
+                                        {item.price} Rs.
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.actionButtons}>
+                                <IconButton
+                                    icon={Edit}
+                                    onPress={() => {
+                                        // TODO: Implement edit functionality
+                                        console.log('Edit product:', item.name);
+                                    }}
+                                    buttonStyle={styles.iconButtonSpacing}
+                                />
+                                <IconButton
+                                    icon={Delete}
+                                    onPress={() => {
+                                        // TODO: Implement delete functionality
+                                        console.log('Delete product:', item.name);
+                                    }}
+                                    buttonStyle={styles.iconButtonSpacing}
+                                />
+                            </View>
                         </View>
                     )}
                 />
@@ -67,16 +96,35 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.lighterGrey,
     },
     productEntry: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
         padding: 10,
+    },
+    productInfoContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    nameContainer: {
+        flex: 2,
+        marginRight: 10,
     },
     productName: {
         ...Styles.title,
     },
+    priceContainer: {
+        flex: 1,
+    },
     productPrice: {
         ...Styles.title,
+    },
+    actionButtons: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    iconButtonSpacing: {
+        marginLeft: 8,
     },
 });
 
