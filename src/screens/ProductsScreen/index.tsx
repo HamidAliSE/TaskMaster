@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { useReactNavigation } from 'hooks';
-import { Header, Separator } from 'components';
+import { Header, Separator, Button } from 'components';
 import Styles from 'constants/Styles';
 import Colors from 'constants/Colors';
 
@@ -37,9 +37,10 @@ const ProductsScreen = () => {
                         </View>
                     )}
                 />
-                <TouchableOpacity onPress={() => navigate.toAddProduct(undefined)} style={styles.addProductButton}>
-                    <Text style={styles.addProductButtonTitle}>Add Product</Text>
-                </TouchableOpacity>
+                <Button
+                    title="Add Product"
+                    onPress={() => navigate.toAddProduct(undefined)}
+                />
             </View>
         </View>
     );
@@ -72,17 +73,6 @@ const styles = StyleSheet.create({
     },
     productPrice: {
         ...Styles.title,
-    },
-    addProductButton: {
-        backgroundColor: Colors.secondary,
-        height: 40,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    addProductButtonTitle: {
-        ...Styles.title,
-        color: Colors.white,
     },
 });
 
