@@ -4,18 +4,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {
+    SIGN_IN_SCREEN,
     SIGN_UP_SCREEN,
     PRODUCTS_SCREEN,
     ADD_PRODUCT_SCREEN,
 } from 'screens/ScreenNames';
 
 import {
+    SignInScreen,
     SignUpScreen,
     ProductsScreen,
     AddProductScreen,
 } from 'screens';
 
 export type RootStackParamList = {
+    SIGN_IN_SCREEN: undefined;
     SIGN_UP_SCREEN: undefined;
     PRODUCTS_SCREEN: undefined;
     ADD_PRODUCT_SCREEN: undefined;
@@ -26,6 +29,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const RootStack = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name={SIGN_IN_SCREEN} component={SignInScreen} />
             <Stack.Screen name={SIGN_UP_SCREEN} component={SignUpScreen} />
             <Stack.Screen name={PRODUCTS_SCREEN} component={ProductsScreen} />
             <Stack.Screen name={ADD_PRODUCT_SCREEN} component={AddProductScreen} />

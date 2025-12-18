@@ -5,6 +5,8 @@ const useReactNavigation = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     const navigate = {
+        toSignIn: (params: RootStackParamList['SIGN_IN_SCREEN']) => navigation.navigate('SIGN_IN_SCREEN', params),
+        toSignUp: (params: RootStackParamList['SIGN_UP_SCREEN']) => navigation.navigate('SIGN_UP_SCREEN', params),
         toProducts: (params: RootStackParamList['PRODUCTS_SCREEN']) => navigation.navigate('PRODUCTS_SCREEN', params),
         toAddProduct: (params: RootStackParamList['ADD_PRODUCT_SCREEN']) => navigation.navigate('ADD_PRODUCT_SCREEN', params),
     };
