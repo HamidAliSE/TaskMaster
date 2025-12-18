@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { useReactNavigation } from 'hooks';
 import { Header, Separator, Button } from 'components';
@@ -15,11 +17,13 @@ const ProductsScreen = () => {
     const { navigate } = useReactNavigation();
     const [products, setProducts] = useState<Product[]>([]);
 
-    useEffect(() => {
-        firestore().collection('products').get().then((snapshot) => {
-            setProducts(snapshot.docs.map((doc) => doc.data()) as Product[]);
-        });
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            firestore().collection('products').get().then((snapshot) => {
+                setProducts(snapshot.docs.map((doc) => doc.data()) as Product[]);
+            });
+        }, [])
+    );
 
     return (
         <View style={styles.screen}>
