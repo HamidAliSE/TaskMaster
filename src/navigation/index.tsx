@@ -31,7 +31,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootStack = () => {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={PRODUCTS_SCREEN}>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={CUSTOMER_DASHBOARD_SCREEN}>
             <Stack.Screen name={SIGN_IN_SCREEN} component={SignInScreen} />
             <Stack.Screen name={SIGN_UP_SCREEN} component={SignUpScreen} />
             <Stack.Screen name={PRODUCTS_SCREEN} component={ProductsScreen} />
