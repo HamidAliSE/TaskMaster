@@ -1,21 +1,14 @@
 import { View, StyleSheet } from 'react-native';
-import { Header, Button } from 'components';
-import { useReactNavigation } from 'hooks';
+import { Header } from 'components';
 import Styles from 'constants/Styles';
 import Colors from 'constants/Colors';
 
-const CustomerDashboardScreen = () => {
-    const { navigate } = useReactNavigation();
-
-    const handleCreateOrder = () => {
-        navigate.toCreateOrder(undefined);
-    };
-
+const CreateOrderScreen = () => {
     return (
         <View style={styles.screen}>
-            <Header title="Customer Dashboard" />
+            <Header title="Create Order" showBackButton />
             <View style={styles.contentContainer}>
-                <Button title="Create Order" onPress={handleCreateOrder} />
+                {/* Order creation form will be added here */}
             </View>
         </View>
     );
@@ -33,4 +26,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CustomerDashboardScreen;
+export default CreateOrderScreen;
+
