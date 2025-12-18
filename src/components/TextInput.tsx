@@ -12,6 +12,7 @@ const TextInput = ({ label, style, ...props }: CustomTextInputProps) => {
             <Text style={styles.label}>{label}</Text>
             <RNTextInput
                 style={[styles.input, style]}
+                placeholderTextColor={Colors.lightGrey}
                 {...props}
             />
         </View>

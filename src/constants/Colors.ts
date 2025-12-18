@@ -5,6 +5,7 @@ export default {
     secondaryLight: 'rgba(255, 188, 190, 1)',
     white: 'rgba(255, 255, 255, 1)',
     black: 'rgba(0, 0, 0, 1)',
+    lightGrey: 'rgba(176, 183, 190, 1)',
     lighterGrey: 'rgba(230, 238, 246, 1)',
     transparent: 'rgba(0, 0, 0, 0)',
 };
