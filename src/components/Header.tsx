@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: Colors.primary,
+        ...Styles.screenPadding,
     },
     leftContainer: {
         flexDirection: 'row',
@@ -79,14 +80,13 @@ const styles = StyleSheet.create({
     },
     title: {
         color: Colors.white,
-        marginHorizontal: 20,
         ...Styles.subheading,
     },
     iconButton: {
         marginLeft: 15,
-        width: 45,
-        height: 45,
-        borderRadius: 22.5,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         justifyContent: 'center',
         alignItems: 'center',
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 25,
+        marginRight: 10,
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         justifyContent: 'center',
         alignItems: 'center',
