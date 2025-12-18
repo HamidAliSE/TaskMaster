@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Text, TouchableOpacity } from 'react-native';
+import auth from '@react-native-firebase/auth';
 import { useReactNavigation } from 'hooks';
 import { Header, TextInput, Button, AppLoader } from 'components';
 import { EyeOpen, EyeClosed } from 'images/svg';
@@ -31,9 +32,39 @@ const SignInScreen = () => {
             return;
         }
 
-        // TODO: Implement sign in logic
-        Alert.alert('Coming Soon', 'Sign in functionality will be implemented soon.');
-        setIsLoading(false);
+        try {
+            await auth().signInWithEmailAndPassword(email.trim(), password);
+
+            Alert.alert('Success', 'Signed in successfully!', [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        navigate.toProducts(undefined);
+                    },
+                },
+            ]);
+        } catch (error: any) {
+            let errorMessage = 'Failed to sign in. Please try again.';
+
+            if (error.code === 'auth/invalid-credential') {
+                errorMessage = 'Invalid email or password. Please check your credentials and try again.';
+            } else if (error.code === 'auth/user-not-found') {
+                errorMessage = 'No account found with this email address.';
+            } else if (error.code === 'auth/invalid-email') {
+                errorMessage = 'The email address is invalid.';
+            } else if (error.code === 'auth/user-disabled') {
+                errorMessage = 'This account has been disabled.';
+            } else if (error.code === 'auth/too-many-requests') {
+                errorMessage = 'Too many failed attempts. Please try again later.';
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            Alert.alert('Error', errorMessage);
+            console.error('Error signing in:', error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleSignUpPress = () => {
