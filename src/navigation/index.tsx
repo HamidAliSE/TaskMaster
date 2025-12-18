@@ -8,6 +8,7 @@ import {
     SIGN_UP_SCREEN,
     PRODUCTS_SCREEN,
     ADD_PRODUCT_SCREEN,
+    CUSTOMER_DASHBOARD_SCREEN,
 } from 'screens/ScreenNames';
 
 import {
@@ -15,6 +16,7 @@ import {
     SignUpScreen,
     ProductsScreen,
     AddProductScreen,
+    CustomerDashboardScreen,
 } from 'screens';
 
 export type RootStackParamList = {
@@ -22,6 +24,7 @@ export type RootStackParamList = {
     SIGN_UP_SCREEN: undefined;
     PRODUCTS_SCREEN: undefined;
     ADD_PRODUCT_SCREEN: { product: { id: string; name: string; price: number } } | undefined;
+    CUSTOMER_DASHBOARD_SCREEN: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -33,6 +36,7 @@ const RootStack = () => {
             <Stack.Screen name={SIGN_UP_SCREEN} component={SignUpScreen} />
             <Stack.Screen name={PRODUCTS_SCREEN} component={ProductsScreen} />
             <Stack.Screen name={ADD_PRODUCT_SCREEN} component={AddProductScreen} />
+            <Stack.Screen name={CUSTOMER_DASHBOARD_SCREEN} component={CustomerDashboardScreen} />
         </Stack.Navigator>
     );
 }

@@ -9,6 +9,7 @@ const useReactNavigation = () => {
         toSignUp: (params: RootStackParamList['SIGN_UP_SCREEN']) => navigation.navigate('SIGN_UP_SCREEN', params),
         toProducts: (params: RootStackParamList['PRODUCTS_SCREEN']) => navigation.navigate('PRODUCTS_SCREEN', params),
         toAddProduct: (params: RootStackParamList['ADD_PRODUCT_SCREEN']) => navigation.navigate('ADD_PRODUCT_SCREEN', params),
+        toCustomerDashboard: (params: RootStackParamList['CUSTOMER_DASHBOARD_SCREEN']) => navigation.navigate('CUSTOMER_DASHBOARD_SCREEN', params),
     };
 
     const goBack = () => {
