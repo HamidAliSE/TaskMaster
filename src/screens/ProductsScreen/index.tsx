@@ -100,8 +100,7 @@ const ProductsScreen = () => {
                                 <IconButton
                                     icon={Edit}
                                     onPress={() => {
-                                        // TODO: Implement edit functionality
-                                        console.log('Edit product:', item.name);
+                                        navigate.toAddProduct({ product: item });
                                     }}
                                     buttonStyle={styles.iconButtonSpacing}
                                 />

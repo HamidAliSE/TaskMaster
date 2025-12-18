@@ -21,7 +21,7 @@ export type RootStackParamList = {
     SIGN_IN_SCREEN: undefined;
     SIGN_UP_SCREEN: undefined;
     PRODUCTS_SCREEN: undefined;
-    ADD_PRODUCT_SCREEN: undefined;
+    ADD_PRODUCT_SCREEN: { product: { id: string; name: string; price: number } } | undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
