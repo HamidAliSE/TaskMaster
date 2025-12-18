@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Text, TouchableOpacity } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import { useReactNavigation } from 'hooks';
 import { Header, TextInput, Button, AppLoader } from 'components';
 import { EyeOpen, EyeClosed } from 'images/svg';
 import Styles from 'constants/Styles';
 import Colors from 'constants/Colors';
 
 const SignUpScreen = () => {
+    const { navigate } = useReactNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -52,14 +55,32 @@ const SignUpScreen = () => {
         }
 
         try {
-            // TODO: Implement Firebase Authentication sign up
-            // import auth from '@react-native-firebase/auth';
-            // await auth().createUserWithEmailAndPassword(email.trim(), password);
+            await auth().createUserWithEmailAndPassword(email.trim(), password);
 
-            Alert.alert('Success', 'Account created successfully!');
-            // TODO: Navigate to appropriate screen after successful sign up
+            Alert.alert('Success', 'Account created successfully!', [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        navigate.toProducts(undefined);
+                    },
+                },
+            ]);
         } catch (error: any) {
-            Alert.alert('Error', error.message || 'Failed to create account. Please try again.');
+            let errorMessage = 'Failed to create account. Please try again.';
+
+            if (error.code === 'auth/email-already-in-use') {
+                errorMessage = 'This email address is already in use.';
+            } else if (error.code === 'auth/invalid-email') {
+                errorMessage = 'The email address is invalid.';
+            } else if (error.code === 'auth/operation-not-allowed') {
+                errorMessage = 'Email/password accounts are not enabled.';
+            } else if (error.code === 'auth/weak-password') {
+                errorMessage = 'The password is too weak.';
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            Alert.alert('Error', errorMessage);
             console.error('Error signing up:', error);
         } finally {
             setIsLoading(false);
