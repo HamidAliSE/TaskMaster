@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Text, TouchableOpacity } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { useReactNavigation } from 'hooks';
 import { Header, TextInput, Button, AppLoader } from 'components';
 import { EyeOpen, EyeClosed } from 'images/svg';
@@ -42,7 +43,11 @@ const SignUpScreen = () => {
         }
 
         try {
-            await auth().createUserWithEmailAndPassword(email.trim(), password);
+            const userCredential = await auth().createUserWithEmailAndPassword(email.trim(), password);
+            const user = userCredential.user;
+            await firestore().collection('users').doc(user.uid).set({
+                role: 'customer',
+            });
 
             Alert.alert('Success', 'Account created successfully!', [
                 {

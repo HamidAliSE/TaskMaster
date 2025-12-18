@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Text, TouchableOpacity } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { useReactNavigation } from 'hooks';
 import { Header, TextInput, Button, AppLoader } from 'components';
 import { EyeOpen, EyeClosed } from 'images/svg';
@@ -33,16 +34,24 @@ const SignInScreen = () => {
         }
 
         try {
-            await auth().signInWithEmailAndPassword(email.trim(), password);
+            const userCredential = await auth().signInWithEmailAndPassword(email.trim(), password);
+            const user = userCredential.user;
+            const userDoc = await firestore().collection('users').doc(user.uid).get();
+            const userData = userDoc.data();
+            const userRole = userData?.role;
 
-            Alert.alert('Success', 'Signed in successfully!', [
-                {
-                    text: 'OK',
-                    onPress: () => {
-                        navigate.toProducts(undefined);
+            if (userRole === 'admin') {
+                Alert.alert('Success', 'Signed in successfully!', [
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                            navigate.toProducts(undefined);
+                        },
                     },
-                },
-            ]);
+                ]);
+            } else {
+                Alert.alert('Coming Soon', 'This feature is coming soon!');
+            }
         } catch (error: any) {
             let errorMessage = 'Failed to sign in. Please try again.';
 
