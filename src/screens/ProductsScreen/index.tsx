@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import firestore from '@react-native-firebase/firestore';
@@ -10,6 +10,7 @@ import Styles from 'constants/Styles';
 import Colors from 'constants/Colors';
 
 interface Product {
+    id: string;
     name: string;
     price: number;
 }
@@ -18,13 +19,59 @@ const ProductsScreen = () => {
     const { navigate } = useReactNavigation();
     const [products, setProducts] = useState<Product[]>([]);
 
-    useFocusEffect(
-        useCallback(() => {
-            firestore().collection('products').get().then((snapshot) => {
-                setProducts(snapshot.docs.map((doc) => doc.data()) as Product[]);
+    const fetchProducts = useCallback(() => {
+        firestore()
+            .collection('products')
+            .get()
+            .then((snapshot) => {
+                setProducts(
+                    snapshot.docs.map((doc) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    })) as Product[]
+                );
+            })
+            .catch((error) => {
+                console.error('Error fetching products:', error);
+                Alert.alert('Error', 'Failed to load products. Please try again.');
             });
-        }, [])
-    );
+    }, []);
+
+    useFocusEffect(useCallback(() => {
+        fetchProducts();
+    }, [fetchProducts]));
+
+    const deleteProduct = async (productId: string) => {
+        setProducts((prevProducts) =>
+            prevProducts.filter((p) => p.id !== productId)
+        );
+
+        try {
+            await firestore().collection('products').doc(productId).delete();
+        } catch (error) {
+            console.error('Error deleting product:', error);
+            Alert.alert('Error', 'Failed to delete product. Please try again.');
+            fetchProducts();
+        }
+    };
+
+    const handleDeleteProduct = (product: Product) => {
+        Alert.alert(
+            'Delete Product',
+            `Are you sure you want to delete "${product.name}"?`,
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => deleteProduct(product.id),
+                },
+            ]
+        );
+    };
 
     return (
         <View style={styles.screen}>
@@ -36,7 +83,7 @@ const ProductsScreen = () => {
                     style={styles.productList}
                     ItemSeparatorComponent={<Separator />}
                     renderItem={({ item }) => (
-                        <View key={item.name} style={styles.productEntry}>
+                        <View key={item.id} style={styles.productEntry}>
                             <View style={styles.productInfoContainer}>
                                 <View style={styles.nameContainer}>
                                     <Text style={styles.productName} numberOfLines={1} ellipsizeMode="tail">
@@ -60,10 +107,7 @@ const ProductsScreen = () => {
                                 />
                                 <IconButton
                                     icon={Delete}
-                                    onPress={() => {
-                                        // TODO: Implement delete functionality
-                                        console.log('Delete product:', item.name);
-                                    }}
+                                    onPress={() => handleDeleteProduct(item)}
                                     buttonStyle={styles.iconButtonSpacing}
                                 />
                             </View>
