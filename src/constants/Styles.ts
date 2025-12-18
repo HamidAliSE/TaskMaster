@@ -10,6 +10,10 @@ export default StyleSheet.create({
     title: {
         fontSize: 16,
     },
+    boldTitle: {
+        fontSize: 16,
+        fontWeight: '600',
+    },
     caption: {
         fontSize: 12,
     },
