@@ -6,10 +6,14 @@ interface ButtonProps extends TouchableOpacityProps {
     title: string;
 }
 
-const Button = ({ title, style, ...props }: ButtonProps) => {
+const Button = ({ title, style, disabled, ...props }: ButtonProps) => {
     return (
-        <TouchableOpacity style={[styles.button, style]} {...props}>
-            <Text style={styles.buttonTitle}>{title}</Text>
+        <TouchableOpacity 
+            style={[styles.button, disabled && styles.buttonDisabled, style]} 
+            disabled={disabled}
+            {...props}
+        >
+            <Text style={[styles.buttonTitle, disabled && styles.buttonTitleDisabled]}>{title}</Text>
         </TouchableOpacity>
     );
 }
@@ -22,9 +26,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    buttonDisabled: {
+        backgroundColor: Colors.lightGrey,
+        opacity: 0.6,
+    },
     buttonTitle: {
         ...Styles.title,
         color: Colors.white,
+    },
+    buttonTitleDisabled: {
+        color: Colors.white,
+        opacity: 0.7,
     },
 });
 
