@@ -5,6 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import { Header, Separator, Button } from 'components';
 import Styles from 'constants/Styles';
 import Colors from 'constants/Colors';
+import { useReactNavigation } from 'hooks';
 
 interface Product {
     id: string;
@@ -13,6 +14,7 @@ interface Product {
 }
 
 const CreateOrderScreen = () => {
+    const { navigate } = useReactNavigation();
     const [products, setProducts] = useState<Product[]>([]);
     const [quantities, setQuantities] = useState<Record<string, number>>({});
 
@@ -78,8 +80,7 @@ const CreateOrderScreen = () => {
     };
 
     const handleViewCart = () => {
-        // TODO: Navigate to cart screen or show cart details
-        Alert.alert('Coming Soon', 'Cart Screen is coming soon.');
+        navigate.toConfirmOrder(undefined);
     };
 
     return (
