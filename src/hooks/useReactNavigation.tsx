@@ -11,6 +11,7 @@ const useReactNavigation = () => {
         toAddProduct: (params: RootStackParamList['ADD_PRODUCT_SCREEN']) => navigation.navigate('ADD_PRODUCT_SCREEN', params),
         toCustomerDashboard: (params: RootStackParamList['CUSTOMER_DASHBOARD_SCREEN']) => navigation.navigate('CUSTOMER_DASHBOARD_SCREEN', params),
         toCreateOrder: (params: RootStackParamList['CREATE_ORDER_SCREEN']) => navigation.navigate('CREATE_ORDER_SCREEN', params),
+        toConfirmOrder: (params: RootStackParamList['CONFIRM_ORDER_SCREEN']) => navigation.navigate('CONFIRM_ORDER_SCREEN', params),
     };
 
     const goBack = () => {
