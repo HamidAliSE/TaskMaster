@@ -1,11 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import { Header, Separator, Button } from 'components';
 import Styles from 'constants/Styles';
 import Colors from 'constants/Colors';
-import { useReactNavigation } from 'hooks';
+import { useReactNavigation, useCart } from 'hooks';
 
 interface Product {
     id: string;
@@ -15,10 +14,10 @@ interface Product {
 
 const CreateOrderScreen = () => {
     const { navigate } = useReactNavigation();
+    const { updateCartProductQuantity, getCartQuantity, getTotalItems, getTotalAmount } = useCart();
     const [products, setProducts] = useState<Product[]>([]);
-    const [quantities, setQuantities] = useState<Record<string, number>>({});
 
-    const fetchProducts = useCallback(() => {
+    useEffect(() => {
         firestore()
             .collection('products')
             .get()
@@ -28,15 +27,6 @@ const CreateOrderScreen = () => {
                     ...doc.data(),
                 })) as Product[];
                 setProducts(fetchedProducts);
-
-                // Initialize quantities to 0 for new products, preserve existing quantities
-                setQuantities((prevQuantities) => {
-                    const initialQuantities: Record<string, number> = {};
-                    fetchedProducts.forEach((product) => {
-                        initialQuantities[product.id] = prevQuantities[product.id] || 0;
-                    });
-                    return initialQuantities;
-                });
             })
             .catch((error) => {
                 console.error('Error fetching products:', error);
@@ -44,39 +34,13 @@ const CreateOrderScreen = () => {
             });
     }, []);
 
-    useFocusEffect(useCallback(() => {
-        fetchProducts();
-    }, [fetchProducts]));
-
-    const incrementQuantity = (productId: string) => {
-        setQuantities((prev) => ({
-            ...prev,
-            [productId]: (prev[productId] || 0) + 1,
-        }));
-    };
-
-    const decrementQuantity = (productId: string) => {
-        setQuantities((prev) => {
-            const currentQuantity = prev[productId] || 0;
-            if (currentQuantity > 0) {
-                return {
-                    ...prev,
-                    [productId]: currentQuantity - 1,
-                };
-            }
-            return prev;
-        });
-    };
-
-    const getTotalItems = () => {
-        return Object.values(quantities).filter((qty) => qty > 0).length;
-    };
-
-    const getTotalAmount = () => {
-        return products.reduce((total, product) => {
-            const quantity = quantities[product.id] || 0;
-            return total + product.price * quantity;
-        }, 0);
+    const updateQuantity = (productId: string, delta: number) => {
+        const product = products.find((p) => p.id === productId);
+        if (product) {
+            const currentQuantity = getCartQuantity(productId);
+            const newQuantity = Math.max(0, currentQuantity + delta); // Ensure quantity never goes below 0
+            updateCartProductQuantity(productId, product.name, product.price, newQuantity);
+        }
     };
 
     const handleViewCart = () => {
@@ -92,7 +56,7 @@ const CreateOrderScreen = () => {
                     style={styles.productList}
                     ItemSeparatorComponent={<Separator />}
                     renderItem={({ item }) => {
-                        const quantity = quantities[item.id] || 0;
+                        const quantity = getCartQuantity(item.id);
                         return (
                             <View style={styles.productEntry}>
                                 <View style={styles.productInfoContainer}>
@@ -106,7 +70,7 @@ const CreateOrderScreen = () => {
                                 <View style={styles.quantityControls}>
                                     <TouchableOpacity
                                         style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
-                                        onPress={() => decrementQuantity(item.id)}
+                                        onPress={() => updateQuantity(item.id, -1)}
                                         activeOpacity={0.7}
                                         disabled={quantity === 0}
                                     >
@@ -115,7 +79,7 @@ const CreateOrderScreen = () => {
                                     <Text style={styles.quantityText}>{quantity}</Text>
                                     <TouchableOpacity
                                         style={[styles.quantityButton, styles.quantityButtonRight]}
-                                        onPress={() => incrementQuantity(item.id)}
+                                        onPress={() => updateQuantity(item.id, 1)}
                                         activeOpacity={0.7}
                                     >
                                         <Text style={styles.quantityButtonText}>+</Text>
@@ -233,4 +197,3 @@ const styles = StyleSheet.create({
 });
 
 export default CreateOrderScreen;
-
