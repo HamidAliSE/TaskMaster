@@ -1,16 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import { Header, Separator, Button } from 'components';
 import Colors from 'constants/Colors';
 import Styles from 'constants/Styles';
-import { useCart } from 'hooks';
+import { useCart, useReactNavigation } from 'hooks';
 import { CartItem } from 'contexts/CartContext';
+import { CUSTOMER_DASHBOARD_SCREEN } from 'screens/ScreenNames';
 
 const ConfirmOrderScreen = () => {
-    const { cartItems, getTotalAmount } = useCart();
+    const { cartItems, getTotalAmount, clearCart } = useCart();
+    const { reset } = useReactNavigation();
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleCreateOrder = () => {
-        Alert.alert('Coming Soon', 'Order creation feature is coming soon.');
+    const handleCreateOrder = async () => {
+        if (cartItems.length === 0) {
+            Alert.alert('Error', 'Your cart is empty.');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const orderData = {
+                items: cartItems.map((item: CartItem) => ({
+                    productId: item.productId,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                })),
+                totalAmount: getTotalAmount(),
+                createdAt: firestore.FieldValue.serverTimestamp(),
+            };
+
+            await firestore().collection('orders').add(orderData);
+
+            clearCart();
+
+            Alert.alert('Success', 'Order created successfully!', [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        reset(CUSTOMER_DASHBOARD_SCREEN, undefined);
+                    },
+                },
+            ]);
+        } catch (error) {
+            console.error('Error creating order:', error);
+            Alert.alert('Error', 'Failed to create order. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const renderCartItem = ({ item }: { item: CartItem }) => {
@@ -53,6 +93,7 @@ const ConfirmOrderScreen = () => {
                             title="Create Order"
                             onPress={handleCreateOrder}
                             style={styles.createOrderButton}
+                            disabled={isLoading}
                         />
                     </>
                 ) : (
