@@ -18,9 +18,20 @@ const useReactNavigation = () => {
         navigation.goBack();
     };
 
+    const reset = <T extends keyof RootStackParamList>(
+        screenName: T,
+        params?: RootStackParamList[T]
+    ) => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: screenName, params } as any],
+        });
+    };
+
     return {
         navigate,
         goBack,
+        reset,
         navigation,
     };
 };
