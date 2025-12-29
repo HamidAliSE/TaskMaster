@@ -13,6 +13,7 @@ interface CartContextType {
     getCartQuantity: (productId: string) => number;
     getTotalItems: () => number;
     getTotalAmount: () => number;
+    clearCart: () => void;
 }
 
 export const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -58,12 +59,17 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
     }, [cartItems]);
 
+    const clearCart = useCallback(() => {
+        setCartItems([]);
+    }, []);
+
     const value: CartContextType = {
         cartItems,
         updateCartProductQuantity,
         getCartQuantity,
         getTotalItems,
         getTotalAmount,
+        clearCart,
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
