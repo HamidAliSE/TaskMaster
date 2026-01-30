@@ -37,14 +37,7 @@ const SignInScreen = () => {
             const { role } = await signIn(email, password);
 
             if (role === 'admin') {
-                Alert.alert('Success', 'Signed in successfully!', [
-                    {
-                        text: 'OK',
-                        onPress: () => {
-                            navigate.toAdminDashboard(undefined);
-                        },
-                    },
-                ]);
+                navigate.toAdminDashboard(undefined);
             } else {
                 navigate.toCustomerDashboard(undefined);
             }

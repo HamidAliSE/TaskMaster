@@ -49,14 +49,8 @@ const SignUpScreen = () => {
                 role: 'customer',
             });
 
-            Alert.alert('Success', 'Account created successfully!', [
-                {
-                    text: 'OK',
-                    onPress: () => {
-                        navigate.toCustomerDashboard(undefined);
-                    },
-                },
-            ]);
+            navigate.toCustomerDashboard(undefined);
+
         } catch (error: any) {
             let errorMessage = 'Failed to create account. Please try again.';
 
