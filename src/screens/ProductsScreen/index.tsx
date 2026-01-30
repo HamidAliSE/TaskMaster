@@ -75,7 +75,7 @@ const ProductsScreen = () => {
 
     return (
         <View style={styles.screen}>
-            <Header title="Products" />
+            <Header title="Products" showBackButton />
             <View style={styles.contentContainer}>
 
                 <FlatList
