@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Text, TouchableOpacity } from 'react-native';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import { useReactNavigation } from 'hooks';
+import { useAuth } from 'contexts/AuthContext';
 import { Header, TextInput, Button, AppLoader } from 'components';
 import { EyeOpen, EyeClosed } from 'images/svg';
 import Styles from 'constants/Styles';
@@ -11,6 +10,7 @@ import { validateEmailField, validatePasswordField } from 'helpers/Utils';
 
 const SignInScreen = () => {
     const { navigate } = useReactNavigation();
+    const { signIn } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -34,13 +34,9 @@ const SignInScreen = () => {
         }
 
         try {
-            const userCredential = await auth().signInWithEmailAndPassword(email.trim(), password);
-            const user = userCredential.user;
-            const userDoc = await firestore().collection('users').doc(user.uid).get();
-            const userData = userDoc.data();
-            const userRole = userData?.role;
+            const { role } = await signIn(email, password);
 
-            if (userRole === 'admin') {
+            if (role === 'admin') {
                 Alert.alert('Success', 'Signed in successfully!', [
                     {
                         text: 'OK',

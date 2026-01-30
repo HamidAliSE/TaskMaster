@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { NavigationState } from '@react-navigation/routers';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -25,6 +26,9 @@ import {
     ConfirmOrderScreen,
 } from 'screens';
 
+import { useAuth } from 'contexts/AuthContext';
+import { AppLoader } from 'components';
+
 export type RootStackParamList = {
     SIGN_IN_SCREEN: undefined;
     SIGN_UP_SCREEN: undefined;
@@ -38,9 +42,15 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const RootStack = () => {
+type InitialRouteName = keyof RootStackParamList;
+
+interface RootStackProps {
+    initialRouteName: InitialRouteName;
+}
+
+const RootStack = ({ initialRouteName }: RootStackProps) => {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={SIGN_IN_SCREEN}>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={initialRouteName}>
             <Stack.Screen name={SIGN_IN_SCREEN} component={SignInScreen} />
             <Stack.Screen name={SIGN_UP_SCREEN} component={SignUpScreen} />
             <Stack.Screen name={PRODUCTS_SCREEN} component={ProductsScreen} />
@@ -53,18 +63,47 @@ const RootStack = () => {
     );
 }
 
-const AppNavigation = () => {
-    return (
-        <NavigationContainer
-            onStateChange={(state: Readonly<NavigationState> | undefined) => {
-                if (state) {
-                    console.log('===> Current Screen:', state.routes[state.index].name);
-                }
-            }}
-        >
-            <RootStack />
-        </NavigationContainer>
-    );
+const StackNavigator = ({ initialRouteName }: { initialRouteName: InitialRouteName }) => (
+    <NavigationContainer
+        onStateChange={(state: Readonly<NavigationState> | undefined) => {
+            if (state) {
+                console.log('===> Current Screen:', state.routes[state.index].name);
+            }
+        }}
+    >
+        <RootStack initialRouteName={initialRouteName} />
+    </NavigationContainer>
+);
+
+const getInitialRoute = (
+    user: ReturnType<typeof useAuth>['user'],
+    userRole: ReturnType<typeof useAuth>['userRole'],
+): InitialRouteName => {
+    if (user && userRole === 'admin') return ADMIN_DASHBOARD_SCREEN;
+    if (user && userRole === 'customer') return CUSTOMER_DASHBOARD_SCREEN;
+    return SIGN_IN_SCREEN;
 };
+
+const AppNavigation = () => {
+    const { authLoading, user, userRole } = useAuth();
+
+    if (authLoading) {
+        return (
+            <View style={styles.loaderContainer}>
+                <AppLoader overlay={false} />
+            </View>
+        );
+    }
+
+    return <StackNavigator initialRouteName={getInitialRoute(user, userRole)} />;
+};
+
+const styles = StyleSheet.create({
+    loaderContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});
 
 export default AppNavigation;
