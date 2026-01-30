@@ -45,12 +45,12 @@ const SignInScreen = () => {
                     {
                         text: 'OK',
                         onPress: () => {
-                            navigate.toProducts(undefined);
+                            navigate.toAdminDashboard(undefined);
                         },
                     },
                 ]);
             } else {
-                Alert.alert('Coming Soon', 'This feature is coming soon!');
+                navigate.toCustomerDashboard(undefined);
             }
         } catch (error: any) {
             let errorMessage = 'Failed to sign in. Please try again.';

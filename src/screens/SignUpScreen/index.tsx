@@ -53,7 +53,7 @@ const SignUpScreen = () => {
                 {
                     text: 'OK',
                     onPress: () => {
-                        navigate.toProducts(undefined);
+                        navigate.toCustomerDashboard(undefined);
                     },
                 },
             ]);
