@@ -1,17 +1,24 @@
 import { View, StyleSheet } from 'react-native';
-import { Header } from 'components';
+import { Header, Button } from 'components';
 import { useReactNavigation } from 'hooks';
+import { useAuth } from 'contexts/AuthContext';
 import Styles from 'constants/Styles';
 import Colors from 'constants/Colors';
 
 const AdminDashboardScreen = () => {
     const { navigate } = useReactNavigation();
+    const { signOut } = useAuth();
+
+    const handleSignOut = async () => {
+        await signOut();
+        navigate.toSignIn(undefined);
+    };
 
     return (
         <View style={styles.screen}>
             <Header title="Admin Dashboard" />
             <View style={styles.contentContainer}>
-                {/* Add admin-specific actions here */}
+                <Button title="Sign Out" onPress={handleSignOut} />
             </View>
         </View>
     );
