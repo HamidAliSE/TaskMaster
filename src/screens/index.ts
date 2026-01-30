@@ -6,3 +6,4 @@ export { default as CustomerDashboardScreen } from './CustomerDashboardScreen';
 export { default as AdminDashboardScreen } from './AdminDashboardScreen';
 export { default as CreateOrderScreen } from './CreateOrderScreen';
 export { default as ConfirmOrderScreen } from './ConfirmOrderScreen';
+export { default as OrdersScreen } from './OrdersScreen';

@@ -18,7 +18,8 @@ const AdminDashboardScreen = () => {
         <View style={styles.screen}>
             <Header title="Admin Dashboard" />
             <View style={styles.contentContainer}>
-                <Button title="Products" onPress={() => navigate.toProducts(undefined)} style={styles.productsButton} />
+                <Button title="Products" onPress={() => navigate.toProducts(undefined)} style={styles.topButton} />
+                <Button title="Orders" onPress={() => navigate.toOrders(undefined)} style={styles.topButton} />
                 <Button title="Sign Out" onPress={handleSignOut} />
             </View>
         </View>
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         ...Styles.screenPadding,
     },
-    productsButton: {
+    topButton: {
         marginBottom: 20,
     },
 });

@@ -13,6 +13,7 @@ import {
     ADMIN_DASHBOARD_SCREEN,
     CREATE_ORDER_SCREEN,
     CONFIRM_ORDER_SCREEN,
+    ORDERS_SCREEN,
 } from 'screens/ScreenNames';
 
 import {
@@ -24,6 +25,7 @@ import {
     AdminDashboardScreen,
     CreateOrderScreen,
     ConfirmOrderScreen,
+    OrdersScreen,
 } from 'screens';
 
 import { useAuth } from 'contexts/AuthContext';
@@ -38,6 +40,7 @@ export type RootStackParamList = {
     ADMIN_DASHBOARD_SCREEN: undefined;
     CREATE_ORDER_SCREEN: undefined;
     CONFIRM_ORDER_SCREEN: undefined;
+    ORDERS_SCREEN: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -59,6 +62,7 @@ const RootStack = ({ initialRouteName }: RootStackProps) => {
             <Stack.Screen name={ADMIN_DASHBOARD_SCREEN} component={AdminDashboardScreen} />
             <Stack.Screen name={CREATE_ORDER_SCREEN} component={CreateOrderScreen} />
             <Stack.Screen name={CONFIRM_ORDER_SCREEN} component={ConfirmOrderScreen} />
+            <Stack.Screen name={ORDERS_SCREEN} component={OrdersScreen} />
         </Stack.Navigator>
     );
 }

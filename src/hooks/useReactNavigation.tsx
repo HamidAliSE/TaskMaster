@@ -13,6 +13,7 @@ const useReactNavigation = () => {
         toAdminDashboard: (params: RootStackParamList['ADMIN_DASHBOARD_SCREEN']) => navigation.navigate('ADMIN_DASHBOARD_SCREEN', params),
         toCreateOrder: (params: RootStackParamList['CREATE_ORDER_SCREEN']) => navigation.navigate('CREATE_ORDER_SCREEN', params),
         toConfirmOrder: (params: RootStackParamList['CONFIRM_ORDER_SCREEN']) => navigation.navigate('CONFIRM_ORDER_SCREEN', params),
+        toOrders: (params: RootStackParamList['ORDERS_SCREEN']) => navigation.navigate('ORDERS_SCREEN', params),
     };
 
     const goBack = () => {
